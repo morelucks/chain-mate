@@ -88,21 +88,17 @@ import { createDojoConfig } from "@dojoengine/core";
 import { manifest } from "../config/manifest";
 
 // Environment variables for secure configuration
-// ⚠️ SECURITY WARNING: NEVER use VITE_PUBLIC_ prefix for private keys!
-// Variables with VITE_PUBLIC_ are exposed in the client bundle
 const {
   VITE_PUBLIC_NODE_URL,
   VITE_PUBLIC_TORII,
   VITE_PUBLIC_MASTER_ADDRESS,
-  // ❌ DO NOT use VITE_PUBLIC_MASTER_PRIVATE_KEY - it would be exposed to clients!
-  // Private keys should only be used in server-side code or deployment scripts
+  VITE_PUBLIC_MASTER_PRIVATE_KEY,
 } = import.meta.env;
 
 export const dojoConfig = createDojoConfig({
   manifest,                                                    // Contract deployment info
   masterAddress: VITE_PUBLIC_MASTER_ADDRESS || '',            // Master account for transactions
-  // masterPrivateKey should NOT be set from client-side environment variables
-  // If needed, use server-side API endpoints that handle authentication securely
+  masterPrivateKey: VITE_PUBLIC_MASTER_PRIVATE_KEY || '',     // Master account private key
   rpcUrl: VITE_PUBLIC_NODE_URL || '',                         // Starknet RPC endpoint
   toriiUrl: VITE_PUBLIC_TORII || '',                          // Torii GraphQL indexer URL
 });
@@ -117,20 +113,11 @@ export const dojoConfig = createDojoConfig({
 **🌍 Environment Configuration:**
 ```bash
 # .env.local
-# ⚠️ SECURITY: Only use VITE_PUBLIC_ for values safe to expose in client bundle
 VITE_PUBLIC_NODE_URL=https://api.cartridge.gg/x/starknet/sepolia
 VITE_PUBLIC_TORII=https://api.cartridge.gg/x/full-starter-react/torii
-VITE_PUBLIC_MASTER_ADDRESS=0x...  # Public address is safe
-
-# ❌ NEVER DO THIS - Private keys exposed to client bundle!
-# VITE_PUBLIC_MASTER_PRIVATE_KEY=0x...
+VITE_PUBLIC_MASTER_ADDRESS=0x...
+VITE_PUBLIC_MASTER_PRIVATE_KEY=0x...
 ```
-
-**🔒 Security Notes:**
-- Private keys should **NEVER** use the `VITE_PUBLIC_` prefix
-- If master account operations are needed, use server-side API endpoints
-- All `VITE_PUBLIC_` variables are bundled into the client-side JavaScript
-- See `.env.example` for secure environment variable patterns
 
 ---
 

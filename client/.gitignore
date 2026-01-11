@@ -15,15 +15,8 @@ dev-dist
 .pnpm-store
 
 # Environment and local settings
-# ⚠️ SECURITY: Never commit files containing secrets, private keys, or API keys
 *.local
 .env
-.env.local
-.env.*.local
-.env.production
-.env.development
-*.env
-!.env.example
 
 # mkcert certificates
 dev-key.pem
