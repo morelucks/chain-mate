@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useState } from 'react';
+import { useReducer, useEffect, useState } from 'react';
 import { useAppContext } from '../chess/contexts/Context';
 import { reducer } from '../chess/reducer/reducer';
 import { initGameState, Status } from '../chess/constants';

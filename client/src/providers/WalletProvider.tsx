@@ -1,4 +1,4 @@
-import React, { createContext, useContext, type PropsWithChildren } from "react";
+import { createContext, useContext, type PropsWithChildren } from "react";
 import { useWallet, type WalletState } from "../hooks/useWallet";
 
 interface WalletContextType extends WalletState {

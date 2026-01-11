@@ -1,11 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 import { Progress } from "./ui/progress"
-import { useAccount } from "@starknet-react/core"
+import { useWalletContext } from "../providers/WalletProvider"
 import useAppStore from "../zustand/store"
 import { Coins, Zap, Heart, Loader2, AlertTriangle } from "lucide-react"
 
 export function PlayerStats() {
-  const { status } = useAccount();
+  const { status } = useWalletContext();
   const player = useAppStore(state => state.player);
   const isLoading = useAppStore(state => state.isLoading);
 

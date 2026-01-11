@@ -1,7 +1,9 @@
-import { Connector } from "@starknet-react/core";
-import { ControllerConnector } from "@cartridge/connector";
-import { ControllerOptions } from "@cartridge/controller";
-import { constants } from "starknet";
+// This file is no longer used - kept for reference
+// Replaced with MetaMask wallet integration
+// import { Connector } from "@starknet-react/core";
+// import { ControllerConnector } from "@cartridge/connector";
+// import { ControllerOptions } from "@cartridge/controller";
+// import { constants } from "starknet";
 import { manifest } from "./manifest";
 
 const { VITE_PUBLIC_DEPLOY_TYPE } = import.meta.env;
@@ -22,16 +24,8 @@ const getRpcUrl = () => {
 };
 
 const getDefaultChainId = () => {
-  switch (VITE_PUBLIC_DEPLOY_TYPE) {
-    case "localhost":
-        return "0x4b4154414e41"; // KATANA in ASCII
-    case "mainnet":
-        return constants.StarknetChainId.SN_MAIN;
-    case "sepolia":
-        return constants.StarknetChainId.SN_SEPOLIA;
-    default:
-        return constants.StarknetChainId.SN_SEPOLIA;
-  }
+  // No longer used - replaced with Mantle Network
+  return "0x1388"; // Mantle Network Chain ID (5000 in hex)
 };
 
 const getContractAddressByTag = (tag: string): string | null => {
@@ -64,21 +58,7 @@ const policies = {
   } : {},
 }
 
-const options: ControllerOptions = {
-  chains: [{ rpcUrl: getRpcUrl() }],
-  defaultChainId: getDefaultChainId(),
-  policies,
-  namespace: "full_starter_react",
-  slot: "full-starter-react",
-  // Fix iframe popup issues
-  iframe: {
-    // Use redirect instead of popup in iframe context
-    useRedirect: true,
-  },
-};
-
-const cartridgeConnector = new ControllerConnector(
-  options,
-) as never as Connector;
+// Stub - no longer used
+const cartridgeConnector = null;
 
 export default cartridgeConnector;

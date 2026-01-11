@@ -1,7 +1,6 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import topLevelAwait from "vite-plugin-top-level-await";
-import wasm from "vite-plugin-wasm";
+// Removed unused plugins: topLevelAwait and wasm (not needed for current setup)
 import fs from "fs";
 import path from "path";
 
@@ -32,7 +31,7 @@ export default defineConfig(({ command }) => {
   };
 
   return {
-    plugins: [react(), wasm(), topLevelAwait()],
+    plugins: [react()],
     server: {
       port: 3002,
       ...getHttpsConfig(),

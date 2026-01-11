@@ -47,7 +47,7 @@ export function useWallet() {
     }
 
     try {
-      await window.ethereum.request({
+      await window.ethereum!.request({
         method: "wallet_addEthereumChain",
         params: [MANTLE_NETWORK],
       });
@@ -66,7 +66,7 @@ export function useWallet() {
     }
 
     try {
-      await window.ethereum.request({
+      await window.ethereum!.request({
         method: "wallet_switchEthereumChain",
         params: [{ chainId: MANTLE_NETWORK.chainId }],
       });
@@ -90,7 +90,7 @@ export function useWallet() {
 
     try {
       // Request account access
-      const accounts = await window.ethereum.request({
+      const accounts = await window.ethereum!.request({
         method: "eth_requestAccounts",
       });
 
@@ -102,7 +102,7 @@ export function useWallet() {
       await switchToMantleNetwork();
 
       // Create provider and signer
-      const provider = new ethers.BrowserProvider(window.ethereum);
+      const provider = new ethers.BrowserProvider(window.ethereum!);
       const signer = await provider.getSigner();
       const address = await signer.getAddress();
 
@@ -146,7 +146,7 @@ export function useWallet() {
 
     const checkConnection = async () => {
       try {
-        const provider = new ethers.BrowserProvider(window.ethereum);
+        const provider = new ethers.BrowserProvider(window.ethereum!);
         const accounts = await provider.listAccounts();
 
         if (accounts.length > 0) {
@@ -192,12 +192,12 @@ export function useWallet() {
       checkConnection();
     };
 
-    window.ethereum.on("accountsChanged", handleAccountsChanged);
-    window.ethereum.on("chainChanged", handleChainChanged);
+    window.ethereum!.on("accountsChanged", handleAccountsChanged);
+    window.ethereum!.on("chainChanged", handleChainChanged);
 
     return () => {
-      window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
-      window.ethereum.removeListener("chainChanged", handleChainChanged);
+      window.ethereum!.removeListener("accountsChanged", handleAccountsChanged);
+      window.ethereum!.removeListener("chainChanged", handleChainChanged);
     };
   }, [isMetaMaskInstalled, disconnect]);
 

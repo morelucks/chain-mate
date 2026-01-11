@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useAppContext } from '../chess/contexts/Context';
 import { takeBack } from '../chess/reducer/actions/move';
 import { setupNewGame } from '../chess/reducer/actions/game';

@@ -3,7 +3,7 @@ import { useState, useCallback } from "react";
 import { useWalletContext } from "../providers/WalletProvider";
 
 export const useSpawnPlayer = () => {
-  const { status, address } = useWalletContext();
+  const { status } = useWalletContext();
   const [isInitializing, setIsInitializing] = useState(false);
   const [txHash, setTxHash] = useState<string | null>(null);
   const [txStatus, setTxStatus] = useState<'PENDING' | 'SUCCESS' | 'REJECTED' | null>(null);

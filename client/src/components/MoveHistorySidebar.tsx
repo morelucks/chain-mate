@@ -1,4 +1,4 @@
-import React from 'react';
+// React import not needed for this component
 import { useAppContext } from '../chess/contexts/Context';
 import './MoveHistorySidebar.css';
 

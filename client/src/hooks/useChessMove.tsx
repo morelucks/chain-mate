@@ -11,12 +11,12 @@ interface MoveParams {
 }
 
 export const useChessMove = () => {
-  const { status, address } = useWalletContext();
+  const { status } = useWalletContext();
   const [isMoving, setIsMoving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [txHash, setTxHash] = useState<string | null>(null);
 
-  const makeMove = useCallback(async (params: MoveParams) => {
+  const makeMove = useCallback(async (_params: MoveParams) => {
     if (status !== "connected") {
       setError("Wallet not connected");
       return { success: false, error: "Wallet not connected" };
@@ -39,7 +39,7 @@ export const useChessMove = () => {
     }
   }, [status]);
 
-  const createGame = useCallback(async (isSinglePlayer: boolean = true) => {
+  const createGame = useCallback(async (_isSinglePlayer: boolean = true) => {
     if (status !== "connected") {
       setError("Wallet not connected");
       return { success: false, error: "Wallet not connected" };
@@ -62,7 +62,7 @@ export const useChessMove = () => {
     }
   }, [status]);
 
-  const resignGame = useCallback(async (gameId: number) => {
+  const resignGame = useCallback(async (_gameId: number) => {
     if (status !== "connected") {
       setError("Wallet not connected");
       return { success: false, error: "Wallet not connected" };
