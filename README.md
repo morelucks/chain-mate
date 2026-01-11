@@ -43,18 +43,9 @@ Chess is one of the world's most popular games with over **600 million players g
    - Tournament entry fees
    - Premium feature subscriptions
 
-2. **NFT Marketplace**
-   - Unique chess piece NFTs
-   - Tournament trophy NFTs
-   - Player achievement badges
-   - Marketplace transaction fees
+ 
 
-3. **Token Economy**
-   - Native token for rewards and staking
-   - Token utility across all platform features
-   - Staking rewards for long-term holders
-
-4. **Premium Features**
+2. **Premium Features**
    - Advanced analytics and game analysis
    - Priority matchmaking
    - Exclusive tournaments
@@ -71,8 +62,43 @@ Chess is one of the world's most popular games with over **600 million players g
 
 **Chainmate combines the proven demand of chess with the innovation of Web3.**
 
- 
- 
+## 🎯 Target Audience
+
+### **Primary Users**
+
+1. **Casual Chess Players**
+   - Play for fun and occasional rewards
+   - Enjoy free PvC mode for practice
+   - Participate in community challenges
+   - Value transparent, fair gameplay
+
+2. **Competitive Players**
+   - Regular players seeking ranked matches
+   - Interested in staking and earning rewards
+   - Participate in tournaments and leaderboards
+   - Want verifiable match history and achievements
+
+3. **Web3 Enthusiasts**
+   - Early adopters of blockchain gaming
+   - Interested in NFT collectibles and tokens
+   - Value on-chain transparency and ownership
+   - Active in crypto and DeFi communities
+
+### **User Acquisition Strategy**
+
+- **Chess Communities**: Partnerships with Chess.com, Lichess, and local chess clubs
+- **Social Media**: Marketing on Twitter, TikTok, YouTube targeting chess content creators
+- **Influencer Collaborations**: Partnerships with chess streamers and Web3 gaming influencers
+- **Web3 Communities**: Engagement with DAOs, gaming guilds, and blockchain gaming platforms
+- **Educational Institutions**: Chess education programs and school tournaments
+- **Gaming Platforms**: Cross-platform integrations and partnerships
+
+### **Geographic Focus**
+
+- **Global Reach**: Accessible to players worldwide with low transaction fees
+- **Emerging Markets**: Focus on regions with growing Web3 adoption
+- **Established Markets**: Target existing chess communities in North America, Europe, and Asia
+
 ## 🎮 Try Chainmate Today
 
 Experience the future of chess gaming:
