@@ -6,7 +6,8 @@ import { useChessMove } from "../../hooks/useChessMove";
 import { useState, useEffect } from "react";
 
 export default function ChessScreen() {
-  const { status, isConnecting, handleConnect, handleDisconnect, address, controllerUsername } = useWalletConnect();
+  const { status, isConnecting, handleConnect, handleDisconnect, address, controllerUsername, error, isMetaMaskInstalled } = useWalletConnect();
+  const [connectionError, setConnectionError] = useState<string | null>(null);
   const { initializePlayer, isInitializing, txHash, txStatus, currentStep } = useSpawnPlayer();
   const { createGame, isMoving, error: moveError, txHash: moveTxHash } = useChessMove();
   const [currentGameMode, setCurrentGameMode] = useState('pvc');
@@ -58,10 +59,17 @@ export default function ChessScreen() {
             {status !== "connected" ? (
               <button
                 className="px-3 py-1.5 rounded bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white text-xs transition shadow-lg shadow-emerald-500/20 disabled:opacity-50"
-                onClick={handleConnect}
+                onClick={async () => {
+                  setConnectionError(null);
+                  try {
+                    await handleConnect();
+                  } catch (err: any) {
+                    setConnectionError(err?.message || "Failed to connect");
+                  }
+                }}
                 disabled={isConnecting}
               >
-                {isConnecting ? "Connecting..." : "Connect Wallet"}
+                {isConnecting ? "Connecting..." : !isMetaMaskInstalled ? "Install MetaMask" : "Connect Wallet"}
               </button>
             ) : (
               <>
@@ -91,6 +99,23 @@ export default function ChessScreen() {
           </div>
         </div>
       </div>
+
+      {/* Connection Error */}
+      {(error || connectionError) && (
+        <div className="flex-shrink-0 px-4 py-2 bg-red-500/20 border-b border-red-500/50">
+          <div className="text-xs text-red-400 flex items-center gap-2">
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+            </svg>
+            {error || connectionError}
+            {!isMetaMaskInstalled && (
+              <a href="https://metamask.io/download/" target="_blank" rel="noopener noreferrer" className="underline ml-2">
+                Install MetaMask
+              </a>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Transaction Status */}
       {(txHash || moveTxHash || moveError) && (

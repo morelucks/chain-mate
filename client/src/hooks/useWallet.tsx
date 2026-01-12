@@ -34,6 +34,7 @@ export function useWallet() {
     provider: null,
     signer: null,
   });
+  const [error, setError] = useState<string | null>(null);
 
   // Check if MetaMask is installed
   const isMetaMaskInstalled = useCallback(() => {
@@ -82,8 +83,12 @@ export function useWallet() {
 
   // Connect wallet
   const connect = useCallback(async () => {
+    setError(null);
+    
     if (!isMetaMaskInstalled()) {
-      throw new Error("MetaMask is not installed. Please install MetaMask to continue.");
+      const errorMsg = "MetaMask is not installed. Please install MetaMask to continue.";
+      setError(errorMsg);
+      throw new Error(errorMsg);
     }
 
     setState((prev) => ({ ...prev, isConnecting: true, status: "connecting" }));
@@ -95,16 +100,34 @@ export function useWallet() {
       });
 
       if (!accounts || accounts.length === 0) {
-        throw new Error("No accounts found");
+        const errorMsg = "No accounts found. Please unlock MetaMask and try again.";
+        setError(errorMsg);
+        throw new Error(errorMsg);
       }
 
       // Switch to Mantle Network
-      await switchToMantleNetwork();
+      try {
+        await switchToMantleNetwork();
+      } catch (networkError: any) {
+        const errorMsg = networkError?.message || "Failed to switch to Mantle Network. Please switch manually in MetaMask.";
+        setError(errorMsg);
+        throw new Error(errorMsg);
+      }
 
       // Create provider and signer
       const provider = new ethers.BrowserProvider(window.ethereum!);
       const signer = await provider.getSigner();
       const address = await signer.getAddress();
+      
+      // Verify we're on Mantle Network
+      const network = await provider.getNetwork();
+      const chainId = Number(network.chainId);
+      
+      if (chainId !== MANTLE_CHAIN_ID) {
+        const errorMsg = `Please switch to Mantle Network (Chain ID: ${MANTLE_CHAIN_ID}). Current network: ${chainId}`;
+        setError(errorMsg);
+        throw new Error(errorMsg);
+      }
 
       setState({
         status: "connected",
@@ -113,10 +136,13 @@ export function useWallet() {
         provider,
         signer,
       });
-
+      
+      setError(null);
       console.log("✅ Wallet connected:", address);
     } catch (error: any) {
       console.error("❌ Connection failed:", error);
+      const errorMessage = error?.message || "Failed to connect wallet. Please try again.";
+      setError(errorMessage);
       setState((prev) => ({
         ...prev,
         status: "disconnected",
@@ -206,6 +232,7 @@ export function useWallet() {
     connect,
     disconnect,
     isMetaMaskInstalled: isMetaMaskInstalled(),
+    error,
   };
 }
 

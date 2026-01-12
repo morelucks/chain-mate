@@ -5,6 +5,7 @@ interface WalletContextType extends WalletState {
   connect: () => Promise<void>;
   disconnect: () => void;
   isMetaMaskInstalled: boolean;
+  error: string | null;
 }
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined);

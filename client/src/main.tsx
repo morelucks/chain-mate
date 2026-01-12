@@ -10,18 +10,18 @@ import "./index.css";
 
 // Initialize app
 function main() {
-  const rootElement = document.getElementById("root");
+    const rootElement = document.getElementById("root");
   if (!rootElement) {
     throw new Error("Root element not found");
   }
 
-  createRoot(rootElement).render(
-    <StrictMode>
+    createRoot(rootElement).render(
+      <StrictMode>
       <WalletProvider>
-        <App />
+            <App />
       </WalletProvider>
-    </StrictMode>
-  );
+        </StrictMode>
+      );
 }
 
 main();

@@ -20,7 +20,7 @@ export function StatusBar() {
     txHash,
     playerExists
   } = useSpawnPlayer();
-  
+
   const player = playerExists; // Simplified for now
   const playerLoading = false;
 
