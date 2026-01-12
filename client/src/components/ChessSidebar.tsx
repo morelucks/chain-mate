@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAppContext } from '../chess/contexts/Context';
 import { takeBack } from '../chess/reducer/actions/move';
-import { setupNewGame } from '../chess/reducer/actions/game';
+// import { setupNewGame } from '../chess/reducer/actions/game';
 import { loadGameResults, clearGameResults } from '../chess/helper/localStorage';
 import { getStakeData, clearStakeData } from '../chess/helper/stakeStorage';
 import actionTypes from '../chess/reducer/actionTypes';
@@ -26,8 +26,8 @@ const TakeBackButton = () => {
 };
 
 // Stake section (always visible under Controls)
-const StakeSection = ({ appState }) => {
-    const [stake, setStake] = useState(null);
+const StakeSection = ({ appState }: { appState: any }) => {
+    const [stake, setStake] = useState<any>(null);
 
     useEffect(() => {
         const current = getStakeData();
@@ -79,9 +79,9 @@ const StakeSection = ({ appState }) => {
 };
 
 // Leaderboard Component (tab)
-const Leaderboard = ({ results, onClear }) => {
+const Leaderboard = ({ results, onClear }: { results: any[], onClear: () => void }) => {
     // Aggregate wins: 3 points per win, 1 each for draws
-    const totals = results.reduce((acc, r) => {
+    const totals = results.reduce((acc: any, r: any) => {
         const winner = (r.winner || '').toLowerCase();
         if (winner === 'white') acc.white += 3;
         else if (winner === 'black') acc.black += 3;
@@ -125,7 +125,7 @@ const Leaderboard = ({ results, onClear }) => {
 };
 
 // Game Mode Selection Component
-const GameModeSelection = ({ gameMode, onNewGame, onShowStakingModal }) => {
+const GameModeSelection = ({ gameMode, onNewGame, onShowStakingModal }: { gameMode: string, onNewGame: (mode: string) => void, onShowStakingModal: (show: boolean) => void }) => {
     const handlePlayerVsComputer = () => {
         onNewGame('pvc');
     };
@@ -163,7 +163,7 @@ const GameModeSelection = ({ gameMode, onNewGame, onShowStakingModal }) => {
 export default function ChessSidebar() {
     const { appState, dispatch } = useAppContext();
     const gameMode = appState?.gameMode || 'pvc';
-    const [leaderboardResults, setLeaderboardResults] = useState([]);
+    const [leaderboardResults, setLeaderboardResults] = useState<any[]>([]);
     const [showStakingModal, setShowStakingModal] = useState(false);
     const [activeTab, setActiveTab] = useState<'controls' | 'leaderboard'>('controls');
 
@@ -177,7 +177,7 @@ export default function ChessSidebar() {
         setLeaderboardResults(loadGameResults());
     }, []);
 
-    const handleNewGame = (mode) => {
+    const handleNewGame = (mode: string) => {
         // Clear stake data when starting a new game
         clearStakeData();
         dispatch({ type: actionTypes.NEW_GAME, payload: { gameMode: mode } });

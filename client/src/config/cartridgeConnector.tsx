@@ -10,23 +10,23 @@ const { VITE_PUBLIC_DEPLOY_TYPE } = import.meta.env;
 
 console.log("VITE_PUBLIC_DEPLOY_TYPE", VITE_PUBLIC_DEPLOY_TYPE);
 
-const getRpcUrl = () => {
-  switch (VITE_PUBLIC_DEPLOY_TYPE) {
-    case "localhost":
-        return "http://localhost:5050"; // Katana localhost default port
-    case "mainnet":
-        return "https://api.cartridge.gg/x/starknet/mainnet";
-    case "sepolia":
-        return "https://api.cartridge.gg/x/starknet/sepolia";
-    default:
-        return "https://api.cartridge.gg/x/starknet/sepolia";
-  }
-};
+// Stub functions - no longer used
+// const getRpcUrl = () => {
+//   switch (VITE_PUBLIC_DEPLOY_TYPE) {
+//     case "localhost":
+//         return "http://localhost:5050";
+//     case "mainnet":
+//         return "https://api.cartridge.gg/x/starknet/mainnet";
+//     case "sepolia":
+//         return "https://api.cartridge.gg/x/starknet/sepolia";
+//     default:
+//         return "https://api.cartridge.gg/x/starknet/sepolia";
+//   }
+// };
 
-const getDefaultChainId = () => {
-  // No longer used - replaced with Mantle Network
-  return "0x1388"; // Mantle Network Chain ID (5000 in hex)
-};
+// const getDefaultChainId = () => {
+//   return "0x1388"; // Mantle Network Chain ID (5000 in hex)
+// };
 
 const getContractAddressByTag = (tag: string): string | null => {
   try {
@@ -45,18 +45,17 @@ const CONTRACT_ADDRESS = CONTRACT_ADDRESS_CHESS || CONTRACT_ADDRESS_FALLBACK || 
 
 console.log("Using chess contract address:", CONTRACT_ADDRESS);
 
-const policies = {
-  contracts: CONTRACT_ADDRESS !== "0x0" ? {
-    [CONTRACT_ADDRESS]: {
-      // Only external (state-changing) calls need policy entries
-      methods: [
-        { name: "create_single_player_game", entrypoint: "create_single_player_game" },
-        { name: "make_move", entrypoint: "make_move" },
-        { name: "resign_game", entrypoint: "resign_game" },
-      ],
-    },
-  } : {},
-}
+// const policies = {
+//   contracts: CONTRACT_ADDRESS !== "0x0" ? {
+//     [CONTRACT_ADDRESS]: {
+//       methods: [
+//         { name: "create_single_player_game", entrypoint: "create_single_player_game" },
+//         { name: "make_move", entrypoint: "make_move" },
+//         { name: "resign_game", entrypoint: "resign_game" },
+//       ],
+//     },
+//   } : {},
+// }
 
 // Stub - no longer used
 const cartridgeConnector = null;

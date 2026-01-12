@@ -1,10 +1,8 @@
 import { useReducer, useEffect, useState } from 'react';
-import { useAppContext } from '../chess/contexts/Context';
 import { reducer } from '../chess/reducer/reducer';
-import { initGameState, Status } from '../chess/constants';
+import { Status } from '../chess/constants';
 import { createPosition } from '../chess/helper';
 import actionTypes from '../chess/reducer/actionTypes';
-import { loadGameResults } from '../chess/helper/localStorage';
 import AppContext from '../chess/contexts/Context';
 import ChessBoardOnly from './ChessBoardOnly';
 import ChessSidebar from './ChessSidebar';
@@ -30,7 +28,7 @@ export default function ChessGameWrapper() {
         gameMode: 'pvc',
     };
 
-    const [appState, dispatch] = useReducer(reducer, initialGameState);
+    const [appState, dispatch] = useReducer(reducer, initialGameState) as [any, (action: { type: string; payload?: any }) => void];
     const [isReady, setIsReady] = useState(false);
     // Mobile sidebar visibility
     const [leftOpen, setLeftOpen] = useState(false);

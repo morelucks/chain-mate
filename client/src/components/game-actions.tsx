@@ -1,10 +1,29 @@
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Dumbbell, Hammer, Bed, Loader2, ExternalLink } from "lucide-react";
-import { useTrainAction } from "../dojo/hooks/useTrainAction";
-import { useMineAction } from "../dojo/hooks/useMineAction";
-import { useRestAction } from "../dojo/hooks/useRestAction";
+// import { useTrainAction } from "../dojo/hooks/useTrainAction";
+// import { useMineAction } from "../dojo/hooks/useMineAction";
+// import { useRestAction } from "../dojo/hooks/useRestAction";
 import useAppStore from "../zustand/store";
+
+// Stub implementations - replace with actual contract interactions
+const useTrainAction = () => ({
+  trainState: { isLoading: false, error: null, txStatus: null, txHash: null },
+  executeTrain: () => {},
+  canTrain: false,
+});
+
+const useMineAction = () => ({
+  mineState: { isLoading: false, error: null, txStatus: null, txHash: null },
+  executeMine: () => {},
+  canMine: false,
+});
+
+const useRestAction = () => ({
+  restState: { isLoading: false, error: null, txStatus: null, txHash: null },
+  executeRest: () => {},
+  canRest: false,
+});
 
 export function GameActions() {
   const player = useAppStore((state) => state.player);

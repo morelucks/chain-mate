@@ -17,7 +17,7 @@ export default function MoveHistorySidebar() {
                     </div>
                 ) : (
                     <div className="moves-list">
-                        {movesList.map((move, i) => (
+                        {movesList.map((move: string, i: number) => (
                             <div key={i} className="move-item">
                                 <span className="move-number">{Math.floor(i/2)+1}.</span>
                                 <span className="move-text">{move}</span>
