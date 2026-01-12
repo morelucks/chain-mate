@@ -21,16 +21,21 @@ export default function LandingPage() {
   }, [status, shouldNavigateAfterConnect, navigate]);
 
   const handleStartPlaying = async () => {
+    console.log("🎮 handleStartPlaying called, status:", status);
     if (status === "connected") {
       // Already connected, navigate directly
+      console.log("✅ Already connected, navigating to chess");
       navigate("/chess");
     } else {
       // Not connected, set flag and connect
+      console.log("🔗 Not connected, attempting connection...");
       setShouldNavigateAfterConnect(true);
       setConnectionError(null);
       try {
         await handleConnect();
+        console.log("✅ Connection successful in handleStartPlaying");
       } catch (err: any) {
+        console.error("❌ Connection error in handleStartPlaying:", err);
         setConnectionError(err?.message || "Failed to connect wallet");
         setShouldNavigateAfterConnect(false);
       }

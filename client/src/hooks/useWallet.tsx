@@ -38,7 +38,9 @@ export function useWallet() {
 
   // Check if MetaMask is installed
   const isMetaMaskInstalled = useCallback(() => {
-    return typeof window !== "undefined" && typeof window.ethereum !== "undefined";
+    const installed = typeof window !== "undefined" && typeof window.ethereum !== "undefined";
+    console.log("🔍 MetaMask check:", { installed, hasWindow: typeof window !== "undefined", hasEthereum: typeof window !== "undefined" && typeof window.ethereum !== "undefined" });
+    return installed;
   }, []);
 
   // Add Mantle Network to MetaMask if not already added
@@ -83,48 +85,62 @@ export function useWallet() {
 
   // Connect wallet
   const connect = useCallback(async () => {
+    console.log("🔗 Starting wallet connection...");
     setError(null);
     
     if (!isMetaMaskInstalled()) {
       const errorMsg = "MetaMask is not installed. Please install MetaMask to continue.";
+      console.error("❌", errorMsg);
       setError(errorMsg);
       throw new Error(errorMsg);
     }
 
+    console.log("✅ MetaMask detected, requesting connection...");
     setState((prev) => ({ ...prev, isConnecting: true, status: "connecting" }));
 
     try {
       // Request account access
+      console.log("📝 Requesting accounts from MetaMask...");
       const accounts = await window.ethereum!.request({
         method: "eth_requestAccounts",
       });
 
+      console.log("📝 Accounts received:", accounts);
+
       if (!accounts || accounts.length === 0) {
         const errorMsg = "No accounts found. Please unlock MetaMask and try again.";
+        console.error("❌", errorMsg);
         setError(errorMsg);
         throw new Error(errorMsg);
       }
 
       // Switch to Mantle Network
+      console.log("🔄 Switching to Mantle Network...");
       try {
         await switchToMantleNetwork();
+        console.log("✅ Switched to Mantle Network");
       } catch (networkError: any) {
+        console.error("❌ Network switch error:", networkError);
         const errorMsg = networkError?.message || "Failed to switch to Mantle Network. Please switch manually in MetaMask.";
         setError(errorMsg);
         throw new Error(errorMsg);
       }
 
       // Create provider and signer
+      console.log("🔧 Creating provider and signer...");
       const provider = new ethers.BrowserProvider(window.ethereum!);
       const signer = await provider.getSigner();
       const address = await signer.getAddress();
+      console.log("📍 Address:", address);
       
       // Verify we're on Mantle Network
       const network = await provider.getNetwork();
       const chainId = Number(network.chainId);
+      console.log("🌐 Network Chain ID:", chainId, "Expected:", MANTLE_CHAIN_ID);
       
       if (chainId !== MANTLE_CHAIN_ID) {
         const errorMsg = `Please switch to Mantle Network (Chain ID: ${MANTLE_CHAIN_ID}). Current network: ${chainId}`;
+        console.error("❌ Wrong network:", errorMsg);
         setError(errorMsg);
         throw new Error(errorMsg);
       }
@@ -138,9 +154,15 @@ export function useWallet() {
       });
       
       setError(null);
-      console.log("✅ Wallet connected:", address);
+      console.log("✅ Wallet connected successfully:", address);
     } catch (error: any) {
       console.error("❌ Connection failed:", error);
+      console.error("❌ Error details:", {
+        message: error?.message,
+        code: error?.code,
+        name: error?.name,
+        stack: error?.stack
+      });
       const errorMessage = error?.message || "Failed to connect wallet. Please try again.";
       setError(errorMessage);
       setState((prev) => ({
