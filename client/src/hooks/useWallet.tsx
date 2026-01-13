@@ -36,12 +36,23 @@ export function useWallet() {
   });
   const [error, setError] = useState<string | null>(null);
 
-  // Check if MetaMask is installed
-  const isMetaMaskInstalled = useCallback(() => {
+  // Check if any EIP-1193 wallet is installed (MetaMask, Coinbase Wallet, Trust Wallet, etc.)
+  const isWalletInstalled = useCallback(() => {
     const installed = typeof window !== "undefined" && typeof window.ethereum !== "undefined";
-    console.log("🔍 MetaMask check:", { installed, hasWindow: typeof window !== "undefined", hasEthereum: typeof window !== "undefined" && typeof window.ethereum !== "undefined" });
+    console.log("🔍 Wallet check:", { 
+      installed, 
+      hasWindow: typeof window !== "undefined", 
+      hasEthereum: typeof window !== "undefined" && typeof window.ethereum !== "undefined",
+      walletName: typeof window !== "undefined" && window.ethereum?.isMetaMask ? "MetaMask" :
+                 typeof window !== "undefined" && window.ethereum?.isCoinbaseWallet ? "Coinbase Wallet" :
+                 typeof window !== "undefined" && window.ethereum?.isTrust ? "Trust Wallet" :
+                 typeof window !== "undefined" && window.ethereum ? "Other EIP-1193 Wallet" : "None"
+    });
     return installed;
   }, []);
+
+  // Legacy name for compatibility
+  const isMetaMaskInstalled = isWalletInstalled;
 
   // Add Mantle Network to MetaMask if not already added
   const addMantleNetwork = useCallback(async () => {
@@ -88,19 +99,22 @@ export function useWallet() {
     console.log("🔗 Starting wallet connection...");
     setError(null);
     
-    if (!isMetaMaskInstalled()) {
-      const errorMsg = "MetaMask is not installed. Please install MetaMask to continue.";
+    if (!isWalletInstalled()) {
+      const errorMsg = "No wallet detected. Please install MetaMask, Coinbase Wallet, or another EIP-1193 compatible wallet.";
       console.error("❌", errorMsg);
       setError(errorMsg);
       throw new Error(errorMsg);
     }
 
-    console.log("✅ MetaMask detected, requesting connection...");
+    const walletName = window.ethereum?.isMetaMask ? "MetaMask" :
+                      window.ethereum?.isCoinbaseWallet ? "Coinbase Wallet" :
+                      window.ethereum?.isTrust ? "Trust Wallet" : "Wallet";
+    console.log(`✅ ${walletName} detected, requesting connection...`);
     setState((prev) => ({ ...prev, isConnecting: true, status: "connecting" }));
 
     try {
       // Request account access
-      console.log("📝 Requesting accounts from MetaMask...");
+      console.log("📝 Requesting accounts from wallet...");
       const accounts = await window.ethereum!.request({
         method: "eth_requestAccounts",
       });
@@ -108,7 +122,7 @@ export function useWallet() {
       console.log("📝 Accounts received:", accounts);
 
       if (!accounts || accounts.length === 0) {
-        const errorMsg = "No accounts found. Please unlock MetaMask and try again.";
+        const errorMsg = "No accounts found. Please unlock your wallet and try again.";
         console.error("❌", errorMsg);
         setError(errorMsg);
         throw new Error(errorMsg);
@@ -121,7 +135,7 @@ export function useWallet() {
         console.log("✅ Switched to Mantle Network");
       } catch (networkError: any) {
         console.error("❌ Network switch error:", networkError);
-        const errorMsg = networkError?.message || "Failed to switch to Mantle Network. Please switch manually in MetaMask.";
+        const errorMsg = networkError?.message || "Failed to switch to Mantle Network. Please switch manually in your wallet.";
         setError(errorMsg);
         throw new Error(errorMsg);
       }
@@ -188,7 +202,7 @@ export function useWallet() {
 
   // Check connection status on mount and when accounts change
   useEffect(() => {
-    if (!isMetaMaskInstalled()) {
+    if (!isWalletInstalled()) {
       return;
     }
 
@@ -247,13 +261,14 @@ export function useWallet() {
       window.ethereum!.removeListener("accountsChanged", handleAccountsChanged);
       window.ethereum!.removeListener("chainChanged", handleChainChanged);
     };
-  }, [isMetaMaskInstalled, disconnect]);
+  }, [isWalletInstalled, disconnect]);
 
   return {
     ...state,
     connect,
     disconnect,
-    isMetaMaskInstalled: isMetaMaskInstalled(),
+    isMetaMaskInstalled: isWalletInstalled(), // Keep for backward compatibility
+    isWalletInstalled: isWalletInstalled(),
     error,
   };
 }
@@ -265,6 +280,9 @@ declare global {
       request: (args: { method: string; params?: any[] }) => Promise<any>;
       on: (event: string, handler: (...args: any[]) => void) => void;
       removeListener: (event: string, handler: (...args: any[]) => void) => void;
+      isMetaMask?: boolean;
+      isCoinbaseWallet?: boolean;
+      isTrust?: boolean;
     };
   }
 }

@@ -4,7 +4,8 @@ import { useWallet, type WalletState } from "../hooks/useWallet";
 interface WalletContextType extends WalletState {
   connect: () => Promise<void>;
   disconnect: () => void;
-  isMetaMaskInstalled: boolean;
+  isMetaMaskInstalled: boolean; // Legacy, for backward compatibility
+  isWalletInstalled: boolean;
   error: string | null;
 }
 

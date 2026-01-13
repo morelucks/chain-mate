@@ -20,8 +20,8 @@ export function useWalletConnect() {
     console.log("🔗 useWalletConnect.handleConnect called");
     try {
       if (!isMetaMaskInstalled) {
-        const errorMsg = "MetaMask is not installed. Please install MetaMask to connect your wallet.";
-        console.error("❌ MetaMask not installed");
+        const errorMsg = "No wallet detected. Please install MetaMask, Coinbase Wallet, or another compatible wallet.";
+        console.error("❌ Wallet not installed");
         setLocalError(errorMsg);
         throw new Error(errorMsg);
       }

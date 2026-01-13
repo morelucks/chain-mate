@@ -155,18 +155,28 @@ export default function LandingPage() {
                 </h3>
                 <p className="text-white/90 text-sm">
                   {!isMetaMaskInstalled 
-                    ? "Please install MetaMask browser extension to connect your wallet."
+                    ? "Please install a compatible wallet (MetaMask, Coinbase Wallet, Trust Wallet, etc.) to connect."
                     : error || connectionError || "Failed to connect wallet. Please try again."}
                 </p>
                 {!isMetaMaskInstalled && (
-                  <a
-                    href="https://metamask.io/download/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-white underline text-sm mt-2 inline-block"
-                  >
-                    Download MetaMask →
-                  </a>
+                  <div className="flex flex-col gap-2 mt-2">
+                    <a
+                      href="https://metamask.io/download/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-white underline text-sm"
+                    >
+                      Download MetaMask →
+                    </a>
+                    <a
+                      href="https://www.coinbase.com/wallet"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-white underline text-sm"
+                    >
+                      Download Coinbase Wallet →
+                    </a>
+                  </div>
                 )}
               </div>
               <button
