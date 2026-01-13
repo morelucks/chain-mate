@@ -16,9 +16,17 @@ export default function LandingPage() {
   useEffect(() => {
     if (status === "connected" && shouldNavigateAfterConnect) {
       setShouldNavigateAfterConnect(false);
+      setConnectionError(null); // Clear any connection errors on success
       navigate("/chess");
     }
   }, [status, shouldNavigateAfterConnect, navigate]);
+
+  // Clear connection error when status changes to connected
+  useEffect(() => {
+    if (status === "connected") {
+      setConnectionError(null);
+    }
+  }, [status]);
 
   const handleStartPlaying = async () => {
     console.log("🎮 handleStartPlaying called, status:", status);
@@ -162,7 +170,10 @@ export default function LandingPage() {
                 )}
               </div>
               <button
-                onClick={() => setConnectionError(null)}
+                onClick={() => {
+                  setConnectionError(null);
+                  // Note: We can't directly clear wallet error here, but it will clear on next connection attempt
+                }}
                 className="text-white/80 hover:text-white"
               >
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
